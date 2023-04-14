@@ -100,10 +100,18 @@ class BinarySearchTree {
     }
     if (value < this.data) {
       current = this;
+      if (this.left) {
       this.left.remove(value);
+      } else {
+        return null;
+      }
     } else if (value > this.data) {
       current = this;
+      if (this.right) {
       this.right.remove(value);
+      } else {
+        return null;
+      }
     } else {
       if (!this.left && !this.right) {
         if (this.data < current.data) {
@@ -111,26 +119,17 @@ class BinarySearchTree {
         } else if (this.data > current.data) {
           current.right = null;
         }
-        //   current.data = null;
       }
         if (this.left || this.right) {
           current = this;
         if (current.data < value) {
           if (!this.left) {
-            // console.log(current);
-            // console.log(this.right);
             current.right = this.right;
             } else if (!this.rigth) {
               if (current.data > value) {
             current.right = this.left;
               }
             }
-          let minFromRight = this.right;
-          while (minFromRight.left) {
-            minFromRight = minFromRight.left;
-          }
-          current.right = this.right;
-          minFromRight.left = this.left;
       } else if (current.data > value) {
           if (!this.left) {
             current.left = this.right;
@@ -140,12 +139,6 @@ class BinarySearchTree {
             current.left = this.left;
               }
             }
-          // let minFromRight = this.right;
-          // while (minFromRight.left) {
-          //   minFromRight = minFromRight.left;
-          // }
-          // current.left = this.right;
-          // minFromRight.left = this.left;
         } else if (current.data = value) {
           if (!current.left) {
           let minFromRight = this.right;
@@ -155,35 +148,52 @@ class BinarySearchTree {
           current.data = current.right.data;
           current.left = current.right.left;
           current.right = current.right.right;
+        } else if (!current.right) {
+          if (this.left.right) {
+          current = this.left.right;
+          } else {current = null};
+          this.data = this.left.data;
+          // console.log(this.left);
+          // console.log(this)
+          if (this.left.left) {
+          this.left = this.left.left;
+          }
+          // console.log(current)
+          this.right = current;
         } else {
           let minFromRight = this.right;
           while (minFromRight.left) {
             minFromRight = minFromRight.left;
           }
+          // console.log(current.right);
+          // console.log(current.right.right);
           current.data = current.right.data;
           if (this.right.left) {
           minFromRight.left = current.left;
+          // console.log(minFromRight);
           current.left = minFromRight;
           } else {
           minFromRight.left = current.left;
           }
-          current.right = current.right.right;
-        }
+          if (current.right.right) {
+            current.right = current.right.right;
+          } else {
+          current.right = null;
         }
       }
-      }
-    }
+    }}}}
 
-    min() {
-      if (!this.data) {
-        return null;
-      }
-      let node = this;
-      while (node.left) {
-        node = node.left;
-      }
-      return node.data;
+
+  min() {
+    if (!this.data) {
+      return null;
     }
+    let node = this;
+    while (node.left) {
+      node = node.left;
+    }
+    return node.data;
+  }
 
   max() {
     if (!this.data) {
